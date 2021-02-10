@@ -2,9 +2,10 @@ package model
 
 import (
 	"errors"
+	"time"
+
 	"github.com/asaskevich/govalidator"
 	uuid "github.com/satori/go.uuid"
-	"time"
 )
 
 const (
@@ -61,21 +62,6 @@ func (transaction *Transaction) isValid() error {
 	return nil
 }
 
-func (transaction *Transaction) Complete() error {
-	transaction.Status = TransactionCompleted
-	transaction.UpdatedAt = time.Now()
-	err := transaction.isValid()
-	return err
-}
-
-func (transaction *Transaction) Cancel(description string) error {
-	transaction.Status = TransactionError
-	transaction.CancelDescription = description
-	transaction.UpdatedAt = time.Now()
-	err := transaction.isValid()
-	return err
-}
-
 func NewTransaction(accountFrom *Account, amount float64, pixKeyTo *PixKey, description string, id string) (*Transaction, error) {
 	transaction := Transaction{
 		AccountFrom:   accountFrom,
@@ -116,7 +102,7 @@ func (transaction *Transaction) Confirm() error {
 func (transaction *Transaction) Cancel(description string) error {
 	transaction.Status = TransactionError
 	transaction.UpdatedAt = time.Now()
-	transacrion.Description = description
+	transaction.Description = description
 	err := transaction.isValid()
 	return err
 }

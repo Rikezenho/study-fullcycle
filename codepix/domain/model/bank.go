@@ -2,6 +2,7 @@ package model
 
 import (
 	"time"
+
 	"github.com/asaskevich/govalidator"
 	uuid "github.com/satori/go.uuid"
 )
@@ -26,10 +27,10 @@ func NewBank(code string, name string) (*Bank, error) {
 		Name: name,
 	}
 
-	bank.ID = uuid.NewwV4().String()
+	bank.ID = uuid.NewV4().String()
 	bank.CreatedAt = time.Now()
 
-	err := bank.IsValid()
+	err := bank.isValid()
 	if err != nil {
 		return nil, err
 	}
